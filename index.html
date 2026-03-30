@@ -35,8 +35,7 @@
 }
 
 - { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html { color-scheme: dark; }
-  html,body { height:100%; overflow:hidden; }
+  html,body { height:100%; overflow:hidden; background:#080810 !important; color:#ededf5 !important; }
   body {
   background:var(–bg);
   color:var(–text);
@@ -109,7 +108,7 @@
   .cal-cell.today .cal-cell-num { color:var(–text); font-weight:700; }
   .cal-cell.other .cal-cell-num { color:var(–muted); }
   .cal-dots { display:flex; gap:2px; }
-  .cal-dot { width:4px; height:4px; border-radius:50%; }
+  .cal-dot { width:5px; height:5px; border-radius:50%; }
   .cal-dot.out { background:var(–out); }
   .cal-dot.inp { background:var(–inp); }
   .cal-dot.oth { background:var(–oth); }
@@ -381,7 +380,9 @@ function renderCalendar(){
     const dt=new Date(y,mo,d),k=dk(dt),isToday=k===todayK;
     const log=S.log[k]||{};
     const cats=[...new Set(Object.keys(log).map(id=>{const t=S.tasks.find(t=>t.id==id);return t?t.cat:null;}).filter(Boolean))];
-    html+=`<div class="cal-cell ${isToday?'today':''}" onclick="openDayModal('${k}')" style="cursor:pointer;">
+    const hasSessions=Object.keys(log).some(id=>(S.log[k][id]||[]).length>0);
+    const bgStyle=hasSessions?`background:rgba(126,232,162,0.15);border:1px solid rgba(126,232,162,0.3);`:'';
+    html+=`<div class="cal-cell ${isToday?'today':''}" onclick="openDayModal('${k}')" style="cursor:pointer;${bgStyle}">
       <span class="cal-cell-num">${d}</span>
       <div class="cal-dots">${cats.map(c=>`<div class="cal-dot ${c}"></div>`).join('')}</div>
     </div>`;
